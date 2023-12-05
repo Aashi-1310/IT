@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>QUES 6: PET FORM</title>
+</head>
+<body bgcolor="F0E7CD">
+    <style>
+        body
+        {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input{
+            width: 50%;
+            padding: 3px ;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+        }
+        form {
+            max-width: 1000px;
+        }
+        button
+        {
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+        h1
+        {
+            font-size: 50px;
+            font-family: Algerian;
+            color:coral;
+
+        }
+    </style>
+    <h1 align="center">PETS</h1>
+    <form align="center">
+        Name:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="Name" id="1"><br><br>
+        Age:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="Age" id="2"><br><br>
+        Weight:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="Weight" id="3"><br><br>
+        Type:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="Type" id="4"><br><br>
+        Favourities:&nbsp<input type="text" name="What" id="5"><br><br>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+    <script>
+        function submitForm()
+        {
+           //event.preventDefault()
+
+            var n = document.getElementById("1").value;
+            var a = document.getElementById("2").value;
+            var w = document.getElementById("3").value;
+            var t = document.getElementById("4").value;
+            var l = document.getElementById("5").value;
+            var pet = 
+            {
+                name: n,
+                age: a,
+                weight: w,
+                type: t,
+                Likes: l
+            };
+            console.log('Pet Object:', pet);
+            console.log('JSON Representation:', JSON.stringify(pet));
+
+        }
+    </script>
+    
+</body>
+</html>

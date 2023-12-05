@@ -1,0 +1,86 @@
+<html>
+    <head><title>QUES 5: BUTTON GRID</title></head>
+    <body bgcolor="pink">
+        <p id='p' align="center"><b><u style="font-size: 30px;">INTERNET</u> </b><br> <br> The internet, a recent man-made marvel, has brought the world closer. It has shattered all barriers and made everything accessible. The internet serves us in countless ways, from sharing information with people across the world to staying connected with our loved ones. It keeps us updated with the latest news and events happening around the world. With a simple click or swipe, we can get answers to almost every question and learn about various aspects of life.</p>
+        <table align="center" border="1">
+
+            <tr >
+                <td align="center">
+                    <button type="button" id=1 onclick="f('1')" style="color: red">   Red   </button>
+                </td>
+                <td align="center">
+                    <button type="button" id=2 onclick="f('2')"  style="color: Blue" >.    Blue    </button> 
+                </td align="center">
+                <td>
+                    <button type="button" id=3 onclick="f('3')"  style="color: Green" > Green  </button>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <button type="button" id=4 onclick="f('4')" > 10 px </button>
+                </td>
+                <td align="center">
+                    <button type="button" id=5 onclick="f('5')" >  20 px  </button>
+                </td>
+                <td align="center">
+                    <button type="button" id=6 onclick="f('6')" > 30 px </button>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <button type="button" id=7 onclick="f('7')"  style="font-family: Arial"> Arial </button>
+                </td>
+                <td align="center">
+                    <button type="button" id=8 onclick="f('8')"  style="font-family: Algerian">Algerian</button>
+                </td>
+                <td align="center">
+                    <button type="button" id=9 onclick="f('9')"  style="font-family: Georgia">Georgia</button>
+                </td>
+            </tr>
+        </table>
+        
+        <style>
+            body
+            {
+                font-size: 20px;
+                margin: 100px;
+            }
+            button{
+                color:black;
+                padding: 15px 32px;
+                text-align: center;
+                font-size: 16px;
+            }
+        </style>
+        <script>
+            
+            function f(n)
+            {
+                x= document.getElementById('p');
+                switch(n)
+                {
+                    case '1' :  x.style.color='Red';
+                                break;
+                    case '2' :  x.style.color='Blue';
+                                break;
+                    case '3' :  x.style.color='Green';
+                                break;
+                    case '4' :  x.style.fontSize='10px';
+                                break;
+                    case '5' :  x.style.fontSize='20px';
+                                break;
+                    case '6' :  x.style.fontSize='30px';
+                                break;
+                    case '7' :  x.style.fontFamily='Arial';
+                                break;
+                    case '8' :  x.style.fontFamily='Algerian';
+                                break;
+                    case '9' :  x.style.fontFamily='Georgia';
+                                break;
+                }
+               
+
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question - 7</title>
+    <style type="text/css">
+        button {
+            background-color: rgb(11, 145, 248);
+            color:rgb(95, 232, 232)
+            padding: 8px;
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-family: Georgia;
+            font-size: 16px;
+            color: #350909;
+			text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="1"></div>
+    <button id="btn1" type="button">Click </button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        var txt = document.getElementById("1");
+        document.getElementById("btn1").addEventListener('click', display);
+
+        function display() {
+            var ourRequest = new XMLHttpRequest();
+            ourRequest.open('GET', 'Pet.json', true);
+            ourRequest.onload = function () {
+                if (ourRequest.status >= 200 && ourRequest.status < 400) {
+                    try {
+                        var data = JSON.parse(ourRequest.responseText);
+                        abc(data);
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error);
+                    }
+                } else {
+                    console.error('Error loading JSON file:', ourRequest.status);
+                }
+            };
+            ourRequest.onerror = function () {
+                console.error('Request failed');
+            };
+            ourRequest.send();
+        }
+
+        function abc(data) {
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    var pet = data[key];
+                    txt.innerHTML += "<p>" + pet.Name + " is a " + pet.Type + " whose age is " + pet.Age + " and weight is " + pet.Weight +
+                        " kg and likes to " + pet.LikesMost + "</p>";
+                }
+            }
+
+            $("#btn1").hide();
+        }
+    </script>
+</body>
+</html>
