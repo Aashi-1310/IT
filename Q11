@@ -1,0 +1,260 @@
+Signin.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    
+    <style>
+
+
+        .but {
+            margin-left: 2rem;
+            color: aliceblue;
+            border: 2px solid black;
+            border-radius: 5px;
+            background-color: rgb(73, 70, 70);
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    
+        .but:hover {
+            background-color: rgb(8, 8, 8);
+        }
+    </style>
+</head>
+<body>
+    <div class="signin" id="signin1">
+        <h1>LOGIN</h1>
+    <form action="/signin" method="post">
+        Email: <input type="email" id="email" placeholder="xyz@abc.com" required><br><br>
+        Password: <input type="password" id="pwd" placeholder="Password" required><br><br>
+        <input type="submit" value="Signin" class="but" >
+    </form>
+    </div>
+    <script>
+        $("form").on("submit",(event)=>{
+            event.preventDefault();
+            let obj = {email:$("#email").val(),pwd:$("#pwd").val()}
+            $.ajax({
+                url:"/signin",
+                method:"post",
+                data: obj,
+                success: function(data){
+                    alert("Hello "+data+" login successful");
+                },
+                error: function(){
+                    alert("Login Failed");
+                }
+            })
+        })
+    </script>
+</body>
+</html>
+
+
+
+Signup.html
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <h1>REGISTER</h1>
+    <form action="/signup" method="post">
+        
+        Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="name" required><br><br>
+        
+        Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="email" id="email" required><br><br>
+        Password: &nbsp;&nbsp;<input type="password" id="pwd" required><br><br>
+        Confirm password: &nbsp;<input type="password" id="cpwd" required><br><br>
+        
+        <input type="submit" value="Signup" class="but" >
+    </form>
+    <script>
+        $("form").on("submit", (event) => {
+            
+            event.preventDefault();
+            if ($("#pwd").val() !== $("#cpwd").val()) {
+                alert("Passwords don't match");
+                return;
+            }
+            else {
+                let obj = { name: $("#name").val(), email: $("#email").val(), pwd: $("#pwd").val(), cpwd: $("#cpwd").val() }
+                $.ajax({
+                    url: "/signup",
+                    method: "post",
+                    data: obj,
+                    success: function (data, textStatus, xhr) {
+                        if (xhr.status === 250)
+                            alert(data);
+                        else
+                            alert("Register successful");
+                    },
+                    error: function () {
+                        alert("Register Failed");
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+
+
+</html>
+
+
+
+
+
+Index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/signin">Sign In</a><br>
+    <a href="/signup">Sign Up</a><br>
+</body>
+</html>
+
+
+
+Index.js
+const mysql = require("mysql2");
+const http = require("http");
+const fs = require("fs");
+
+
+let connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "ansh@123",
+    database: "it_23"
+})
+
+
+connection.connect((err) => {
+    if (err)
+        console.log(err);
+    else
+        console.log("Connected")
+})
+
+
+const server = http.createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    if (req.url === "/") {
+       
+        fs.readFile("./index.html", (err, data) => {
+            if (err)
+                throw err;
+            else {
+                res.write(data);
+                res.end();
+            }
+        });
+    }
+    if (req.url === "/signin") {
+        if (req.method === "GET") {
+            fs.readFile("./signin1.html", (err, data) => {
+                if (err)
+                    throw err;
+                else {
+                    res.write(data);
+                    res.end();
+                }
+            });
+        }
+        if (req.method === "POST") {
+            let body = "";
+            req.on('data', function (chunk) {
+                body += chunk;
+            });
+            req.on('end', function () {
+                let qs = new URLSearchParams(body);
+                let uid = qs.get("email");
+                let pwd = qs.get("pwd");
+                connection.query("select * from users where email=? and password=?", [uid, pwd], function (err, result, fields) {
+                    if (result.length == 1) {
+                        res.writeHead(200);
+                        res.write(result[0].name);
+                    }
+                    else {
+                        res.writeHead(400);
+                    }
+                    res.end();
+                });
+            });
+        }
+    }
+    if (req.url === "/signup") {
+        if (req.method === "GET") {
+            fs.readFile("./signup.html", (err, data) => {
+                if (err)
+                    throw err;
+                else {
+                    res.write(data);
+                    res.end();
+                }
+            });
+        }
+        if (req.method === "POST") {
+            let body = "";
+            req.on('data', function (chunk) {
+                body += chunk;
+            });
+            req.on('end', function () {
+                let qs = new URLSearchParams(body);
+                let name = qs.get("name");
+                let uid = qs.get("email");
+                let pwd = qs.get("pwd");
+                connection.query("select * from users where email=?", [uid], function (err, result, fields) {
+                    if (err) {
+                        console.log("err")
+                        res.writeHead(400);
+                    }
+                    else if (result.length == 1) {
+                        res.writeHead(250);
+                        res.write("User Already Exists");
+                    }
+                    else {
+                        connection.query(`insert into users values("${name}","${uid}","${pwd}")`, function (err, result, fields) {
+                            if (err)
+                                if (err.code == "ER_DUP_ENTRY")
+                                    res.writeHead(250);
+                                else
+                                    res.writeHead(200);
+                            res.end();
+                        });
+                    }
+                    res.end();
+                });
+            });
+        }
+    }
+});
+
+
+server.listen(4000, (err) => {
+    if (err)
+        throw err;
+    console.log("Server Listening at 4000");
+})
